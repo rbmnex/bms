@@ -15,7 +15,8 @@ use Illuminate\Support\Facades\Artisan;
 |
 */
 Route::get('/', function () {
-    return redirect(route('login.sso'));
+    //return redirect(route('login.sso'));
+    return view('landing');
 });
 
 Route::get('/login-vendor', function () {
