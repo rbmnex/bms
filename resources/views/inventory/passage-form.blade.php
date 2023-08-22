@@ -83,14 +83,14 @@
                         <div class="col">
                             <div class="form-group">
                                 <label for="km" class="my-1 mr-2">KM <span style="color : red;">*</span></label>
-                                <input type="number" name="km" class="form-control" id="kmTxt" value="" required>
+                                <input type="number" name="km" class="form-control" id="kmTxt" value="" min="0" pattern="[0-9]" onkeypress="return !(event.charCode == 46)" step="1" required>
                                 <div class="invalid-feedback" style="display:block;"></div>
                             </div>
                         </div>
                         <div class="col">
                             <div class="form-group">
                                 <label for="m" class="my-1 mr-2">Meter <span style="color : red;">*</span></label>
-                                <input type="number" name="m" class="form-control" id="mTxt" value="" required>
+                                <input type="number" name="m" class="form-control" id="mTxt" min="0" pattern="[0-9]" onkeypress="return !(event.charCode == 46)" step="1" value="" required>
                                 <div class="invalid-feedback" style="display:block;"></div>
                             </div>
                         </div>
@@ -213,7 +213,7 @@ $(document).ready(function() {
     $('#passageList').addClass("active");
 
     var validator = $('#roadForm').validate();
-    
+
     @isset($road)
     $('#idHdn').val("{{$road->id}}");
     $('#passageNoTxt').val("{{$road->number}}");
@@ -235,7 +235,7 @@ $(document).ready(function() {
     $('#mTxt').val("{{$road->meter}}");
     $('#roadForm').attr("action", "{{ route('update.road') }}")
     @endisset
-} );   
+} );
     function loadDistrict() {
         var input = $('#stateSlt').val();
         if (input) {
@@ -244,7 +244,7 @@ $(document).ready(function() {
 
                 $('#districtSlt').append('<option value="" selected>Please select</option>');
 
-                $('#districtSlt').rules("add", 
+                $('#districtSlt').rules("add",
                 {
                     required: true,
                     messages: {

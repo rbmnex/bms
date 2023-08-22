@@ -660,7 +660,7 @@ $(function() {
           window.location.href = "{{route('bridge.review')}}?bridge_id="+$('#hdn_bridge_id').val()+"&year_id="+$('#hdn_year_id').val();
     });
     $('#delbtn').click(function() {
-        $('#formCertifier').attr("action","{{route('remove.bridge')}}");
+        $('#formCertifier').attr("action","{{route('remove.year')}}");
         //$('#commentTxt').attr("required","required");
         $('#formCertifier').submit();
     });

@@ -15,7 +15,7 @@
                     <label for="ic">Your Identification Number</label>
                     <div class="input-group">
                         <span class="input-group-text" id="basic-addon1"><span class="fas fa-address-card"></span></span>
-                        <input type="text" class="form-control @error('ic_no') is-invalid @enderror" placeholder="991122023333" id="ic" value="{{ old('ic_no') }}" name="ic_no" required autocomplete="email" autofocus>
+                        <input type="text" class="form-control @error('ic_no') is-invalid @enderror" placeholder="991122023333" id="ic" value="{{ old('ic_no') }}" name="ic_no" required autocomplete="off" autofocus>
                     </div>
                     <div class="invalid-feedback" style="display:block;">
                         @error('ic_no') {{ $message }} @enderror
@@ -28,7 +28,7 @@
                         <label for="password">Your Password</label>
                         <div class="input-group" >
                             <span class="input-group-text" id="basic-addon2"><span class="fas fa-unlock-alt"></span></span>
-                            <input type="password" placeholder="Password" class="form-control @error('password') is-invalid @enderror" id="password" name="password" required autocomplete="current-password" value="password">
+                            <input type="password" placeholder="Password" class="form-control @error('password') is-invalid @enderror" id="password" name="password" required autocomplete="off" value="password">
                             <input type="hidden" name="sso" value="YES">
                         </div>
                         <div class="invalid-feedback" style="display:block;">

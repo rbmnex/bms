@@ -101,7 +101,7 @@ This system has web-based features that allow all bridge information registratio
                                 </tr>
                                 @endforeach
                                 <tr class="zone">
-                                    <td>North Zone</td>
+                                    <td>South Zone</td>
                                     <td>{{ $south->sum('count') }}</td>
                                     @foreach ($columns as $cs)
                                     <td>{{ $south->sum($cs->asset_name) }}</td>

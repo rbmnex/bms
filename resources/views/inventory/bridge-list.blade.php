@@ -57,6 +57,30 @@
                     <input type="hidden" name="ids" id="idsHdn"/>
                     <input type="hidden" type="type" id="typeHdn"/>
                 </form>
+                <form id="deleteForm" action="{{route('remove.bridge')}}" method="POST">
+                    @csrf
+                    <input type="hidden" name="bridge_id" id="bridge_id"/>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-delete" tabindex="-1" role="dialog" aria-labelledby="modal-default" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="h6 modal-title">Confirmation</h2>
+                <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button> -->
+            </div>
+            <div class="modal-body">
+                <span>Are tou sure delete this bridge?</span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="delbtn" class="btn btn-sm btn-secondary">Yes</button>
+                <button type="button" class="btn btn-link text-danger ml-auto" data-dismiss="modal">No</button>
             </div>
         </div>
     </div>
@@ -309,6 +333,15 @@
             $('#exportForm').submit();
        });
     });
+
+    $('#delbtn').click(function() {
+        $('#deleteForm').submit();
+    });
+    function deleteThis(id) {
+        $('#bridge_id').val(id);
+        $('#modal-delete').modal('show');
+    //    $('#deleteForm').submit();
+    }
 
     $('#menu-inventory').removeClass("collapsed");
     $('#menu-inventory').attr("aria-expanded", "true");

@@ -2,10 +2,13 @@
 
 @section('head')
 <link rel="stylesheet" type="text/css" href="{{asset('vendor/DataTables/DataTables-1.10.23/css/dataTables.bootstrap4.min.css')}}" />
+
 @endsection
 
 @section('content')
+
 <div class="row">
+
     <div class="col-12 mb-4">
         <div class="card border-light shadow-sm components-section">
             <div class="card-header border-bottom border-light">
@@ -21,8 +24,9 @@
                         </ul>
                     </div>
                 @endif
-                <div class="invalid-feedback" id="errDiv">
+                <div class="invalid-feedback" id="errDiv" >
                     <ul>
+
                     </ul>
                 </div>
 
@@ -256,7 +260,7 @@
                                                     </div>
                                                     <div class="form-group">
                                                         <label class="my-1 mr-2" for="area">Area (m2)</label>
-                                                        <input type="text" name="area" step="0.001" class="form-control" id="areaTxt" value="{{old('area')}}">
+                                                        <input type="text" name="area"  class="form-control" id="areaTxt" value="{{old('area')}}">
                                                         <div class="invalid-feedback"></div>
                                                     </div>
                                                 </div>
@@ -920,6 +924,7 @@
         </div>
     </div>
 </div>
+
 <!-- modal search passage -->
 <div class="modal fade" id="modal-passage" tabindex="-1" role="dialog" aria-labelledby="modal-passage" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -1060,6 +1065,7 @@
 
 <script src="{{asset('js/bridge.js')}}"></script>
 <script>
+    var validator;
     @isset($year)
 @if($year->status == 'ONHOLD')
     function deleteInfo() {
@@ -1071,10 +1077,67 @@
 @endif
 @endisset
     function saveInfo() {
+
+        $('#assetSlt').rules('remove');
+        $('#stateSlt').rules('remove');
+        $('#districtSlt').rules('remove');
+        $('#consYearTxt').rules('remove');
+        $('#spansNoTxt').rules('remove');
+        $('#spanMinTxt').rules('remove');
+        $('#spanMaxTxt').rules('remove');
+        $('#totalLengthTxt').rules('remove');
+        $('#overallWidthTxt').rules('remove');
+        $('#skewAngleTxt').rules('remove');
+        $('#deckSlt').rules('remove');
+        $('#systemSlt').rules('remove');
+        $('#materialSlt').rules('remove');
+        $('#abutmentTypeSlt').rules('remove');
+        $('#abutmentMaterialSlt').rules('remove');
+        $('#abutmentFoundationSlt').rules('remove');
+        $('#coordinateXTxt').rules('remove');
+        $('#coordinateYTxt').rules('remove');
         $('#nameTxt').rules('remove');
         $('#emailTxt').rules('remove');
-        $('#bridgeForm').attr("action", "{{route('hold.bridge')}}");
-        $('#bridgeForm')[0].submit();
+         $('#bridgeForm').attr("action", "{{route('hold.bridge')}}");
+        // var validator = $('#bridgeForm').validate({
+        //     ignore: "",
+        //     errorContainer: "#errDiv",
+        //     errorLabelContainer: "#errDiv ul",
+        //     wrapper: "li",
+        //     focusInvalid: false,
+        //     invalidHandler: function(form, validator) {
+
+        //         if (!validator.numberOfInvalids())
+        //             return;
+
+        //         $('html, body').animate({
+        //             scrollTop: $(validator.errorList[0].element).offset().top
+        //         }, 1000);
+
+        //     },
+        //     rules : {
+        //         bridge_name : {
+        //             required : true,
+        //             minlength : 10
+        //         },
+        //         route_code : {
+        //             required : true
+        //         }
+        //     },
+        //     messages : {
+        //         bridge_name : {
+        //             required : "Bridge Name is required",
+        //             minlength : "Bridge need more than 10 characters"
+        //         },
+        //         route_code : {
+        //             required : "Road Information is required"
+        //         }
+        //     }
+        // });
+        // validator.validate();
+        if(validator.valid()) {
+            $('#bridgeForm').submit();
+        }
     }
     function loadDistrict() {
         var input = $('#stateSlt').val();
@@ -1108,6 +1171,8 @@
 
     }
     $(document).ready(function() {
+        $('.loading').hide();
+
         $('#menu-inventory').removeClass("collapsed");
         $('#menu-inventory').attr("aria-expanded", "true");
         $('#submenu-app-inventory').addClass("show");
@@ -1120,7 +1185,7 @@
             "lengthMenu": [5, 10, 20]
         });
 
-        var validator = $('#bridgeForm').validate({
+        validator = $('#bridgeForm').validate({
             ignore: "",
             errorContainer: "#errDiv",
             errorLabelContainer: "#errDiv ul",
@@ -1298,11 +1363,11 @@
         $('#modal-msg').modal('show');
         @endif
 
-        const elem = document.getElementById('mainDateTxt');
-        const datepicker = new Datepicker(elem, {
-        // ...options
-            format : 'yyyy-mm-dd'
-        });
+        // const elem = document.getElementById('mainDateTxt');
+        // const datepicker = new Datepicker(elem, {
+        // // ...options
+        //     format : 'yyyy-mm-dd'
+        // });
 
 
 

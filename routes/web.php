@@ -142,6 +142,7 @@ Route::get('/bridge/review','BridgeController@review')->name('bridge.review');
 Route::post('/alter/bridge','BridgeController@alter')->name('alter.bridge');
 Route::post('/apply/bridge','BridgeController@apply')->name('apply.bridge');
 Route::post('/bridge/remove','BridgeController@removeBridge')->name('remove.bridge');
+Route::post('/bridge/year-remove','BridgeController@removeYear')->name('remove.year');
 
 Route::get('/inspect/form','InpectionController@show')->name('inspect.form');
 Route::get('/inspect/user','InpectionController@fetchUser')->name('inspect.user');

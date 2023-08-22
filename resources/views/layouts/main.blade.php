@@ -15,7 +15,7 @@
 
 
     <link type="text/css" href="{{asset('vendor/notyf/notyf.min.css')}}" rel="stylesheet">
- 
+
 
     <!-- Volt CSS -->
     <link type="text/css" href="{{asset('css/volt.css')}}" rel="stylesheet">
@@ -95,6 +95,30 @@
         .select-info {
             padding-left: 35px;
         }
+        #indicator {
+         position: absolute;
+         top: 0;
+         bottom: 0;
+         left: 0;
+         right: 0;
+         margin: auto;
+         border: 10px solid grey;
+         border-radius: 50%;
+         border-top: 10px solid red;
+         width: 100px;
+         height: 100px;
+         animation: spin 1s linear infinite;
+      }
+      @keyframes spin {
+         0% {
+            -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+         }
+         100% {
+            -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+         }
+      }
     </style>
 </head>
 
@@ -118,7 +142,7 @@
 
                     @yield('content')
 
-                       
+
                     <div class="modal fade" id="modal-msg" tabindex="-1" role="dialog" aria-labelledby="modal-msg" aria-hidden="false">
                         <div class="modal-dialog modal-dialog-centered modal-s" role="document">
                             <div class="modal-content">
@@ -129,7 +153,7 @@
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                @if (session('message')) 
+                                @if (session('message'))
                                     <span>{{ session('message') }}</span>
                                 @endif
                                 </div>
@@ -140,14 +164,24 @@
                         </div>
                     </div>
 
-                    <script src="{{asset('js/jquery.min.js')}}" ></script>
+                    <script src="{{asset('js/jquery-3.7.0.min.js')}}" ></script>
                     <script src="{{asset('vendor/popper.js/dist/umd/popper.min.js')}}"></script>
                     <script src="{{asset('vendor/bootstrap/dist/js/bootstrap.min.js')}}"></script>
                     <script src="{{asset('vendor/smooth-scroll/dist/smooth-scroll.polyfills.min.js')}}"></script>
                     <script src="{{asset('js/volt.js')}}"></script>
                     <!-- Vendor JS -->
                     <script src="{{asset('vendor/onscreen/dist/on-screen.umd.min.js')}}"></script>
-
+                    <script>
+                        $('body').append('<div style = "" id = "indicator"> <div class="loader"> </div> </div>');
+                        $(window).on('load', function () {
+                            setTimeout(removeLoader, 2000);
+                        });
+                        function removeLoader() {
+                            $("#indicator").fadeOut(1000, function () {
+                                $("#indicator").remove();
+                            });
+                        }
+                    </script>
                     @yield('js')
 
                     @include('common.footer')

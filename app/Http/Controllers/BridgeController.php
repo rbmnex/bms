@@ -189,7 +189,7 @@ class BridgeController extends Controller
         //$bridges = Bridge::fetchByStatus([Task::APPROVED_STATUS],$condition);
 
         $bridges = Bridge::select('*')
-            ->with('years')
+        //  ->with('years')
             ->with('road')
             ->with('asset')
             ->with('ramp')
@@ -230,8 +230,10 @@ class BridgeController extends Controller
                         $btn .= '<a href="' . route('bridge.detail') . '?id=' . $bridge->id . '&year=' . $year->id . '" class="btn btn-sm btn-info mx-1"><span class="far fa-eye mx-1"></span>' . $year->year . '</a>';
                     }
                 }
-                if (Auth::user()->hasRole(["Administrator", "Registrar"])) {
+                if (Auth::user()->hasRole(["Administrator", "Verifier"])) {
                     $btn .= '<a href="' . route('bridge.year') . '?id=' . $bridge->id . '" class="btn btn-sm btn-info mx-1"><span class="fas fa-plus mx-1"></span>Add Year</a>';
+                    $btn .= '<button onclick="deleteThis('. $bridge->id . ');" class="btn btn-sm btn-danger mx-1"><span class="fas fa-trash mx-1"></span>Delete</button>';
+                    //mr-2 fa fa-trash
                 }
                 return $btn;
             })
@@ -410,12 +412,15 @@ class BridgeController extends Controller
 
         return Datatables::of($bridges)
             ->addColumn('action', function ($bridge) use ($request) {
+                $btn = '';
                 if (Auth::user()->hasRole(["Administrator", "Verifier"]) && ($bridge->status == 'NEW' || $bridge->status == 'REVERIFY')) {
                     $link = route('bridge.edit') . '?id=' . $bridge->id . '&year=' . $bridge->year_id . '&task=' . $bridge->task_id;
+                    $btn = $btn.'<a href="' . $link . '" class="btn btn-sm btn-info"><span class="fas fa-search mx-1"></span>' . $bridge->year . '</a>';
                 } elseif (Auth::user()->hasRole(["Certifier", "Administrator"] && $bridge->status == 'PENDING')) {
                     $link = route('bridge.detail') . '?id=' . $bridge->id . '&year=' . $bridge->year_id . '&task=' . $bridge->task_id;
+                    $btn = $btn.'<a href="' . $link . '" class="btn btn-sm btn-info"><span class="fas fa-search mx-1"></span>' . $bridge->year . '</a>';
                 }
-                $btn = '<a href="' . $link . '" class="btn btn-sm btn-info"><span class="fas fa-search mx-1"></span>' . $bridge->year . '</a>';
+
 
                 return $btn;
             })
@@ -1035,12 +1040,13 @@ class BridgeController extends Controller
 
     public function save(Request $request)
     {
-        $this->validateForm($request, false);
+        // requirement from Mr. Dzoldi
+         $this->minValidationForm($request);
 
         $data = $request->all();
 
-        if (isset($data['bridgeid']) && empty($data['add'])) {
 
+        if (isset($data['bridgeid']) && empty($data['add'])) {
             if ($request->file('photo')) {
                 $cFilename = $request->file('photo')->getClientOriginalName() . '.' . $request->file('photo')->getClientOriginalExtension();
                 if ($data['photo_path'] != $cFilename) {
@@ -1138,6 +1144,12 @@ class BridgeController extends Controller
     public function removeBridge(Request $request) {
         $data = $request->all();
         Bridge::where('id',$data['bridge_id'])->update(['flag' => 0]);
+        return redirect(route("bridge.view") . "?action=list")->with('message', 'This bridge successfully removed');
+    }
+
+    public function removeYear(Request $request) {
+        $data = $request->all();
+        ConstructionYear::where('bridge_id',$data['bridge_id'])->where('id',$data['year_id'])->update(['flag' => 0]);
         return redirect(route("bridge.view") . "?action=list")->with('message', 'This bridge successfully removed');
     }
 
@@ -1533,6 +1545,14 @@ class BridgeController extends Controller
             $validateFields['name_user'] = 'required|string';
             $validateFields['email'] = 'required|email';
         }
+        $request->validate($validateFields);
+    }
+
+    private function minValidationForm($request) {
+        $validateFields = [
+            'bridge_name' => 'required|string',
+            'route_code' => 'required',
+        ];
         $request->validate($validateFields);
     }
 }

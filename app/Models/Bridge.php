@@ -15,7 +15,7 @@ class Bridge extends Model
 
     public function years()
     {
-        return $this->hasMany('App\Models\ConstructionYear', 'bridge_id')->orderBy('year', 'desc');
+        return $this->hasMany('App\Models\ConstructionYear', 'bridge_id')->where('flag',1)->orderBy('year', 'desc');
     }
 
     public function ratings()
@@ -146,12 +146,12 @@ class Bridge extends Model
             $arrBridges = array();
             $arrYears = array();
             $results = array();
-    
+
             foreach ($queryYears as $year) {
                 array_push($arrBridges, $year->bridge_id);
                 array_push($arrYears, $year);
             }
-    
+
             if (isset($arrBridges)) {
                 $bridges = $query->whereIn('bridge.id', $arrBridges)->get();
                 if (isset($bridges)) {
@@ -165,12 +165,12 @@ class Bridge extends Model
                         } else {
                             $bridge->years = array();
                         }
-    
+
                         array_push($results, $bridge);
                     }
                 }
             }
-    
+
             return $results;
     }
 
@@ -181,7 +181,7 @@ class Bridge extends Model
             ->join('public.route as route', 'road.route_id', 'route.id')
             ->join('public.district as district', 'bridge.district_id', 'district.id')
             ->join('public.state as state', 'district.state_id', 'state.id')
-            ->join('public.master_lookup as lookup', 'bridge.asset_id', 'lookup.id')
+            ->leftJoin('public.master_lookup as lookup', 'bridge.asset_id', 'lookup.id')
             ->select(
                 'bridge.id as id',
                 'bridge.name as bridge_name',
@@ -193,7 +193,8 @@ class Bridge extends Model
                 'state.name as state_name',
                 'lookup.name as asset',
                 'bridge.remark as remark'
-            );
+            )
+            ->orderBy('bridge.id','desc');
 
         if (isset($condition)) {
             $query = $query->where($condition);
